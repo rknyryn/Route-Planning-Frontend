@@ -1,9 +1,22 @@
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Picker } from '@react-native-picker/picker';
 
 export default function HomeUser() {
+  const [selectedData, setSelectedData] = useState();
+
   return (
     <View style={styles.container}>
+      <View style={{ margin:5, width: "80%", backgroundColor: "white", borderRadius: 10 }}>
+        <Picker
+          selectedValue={selectedData}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedData(itemValue)
+          }>
+          <Picker.Item label="İzmit" value="izmit" />
+          <Picker.Item label="Gölcük" value="gölcük" />
+        </Picker>
+      </View>
       <TouchableOpacity
         style={styles.button}
       >
@@ -27,7 +40,7 @@ const styles = StyleSheet.create({
   button: {
     margin: 5,
     backgroundColor: '#0782F9',
-    width: '60%',
+    width: '80%',
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
