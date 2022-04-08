@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 
-export default function HomeUser() {
+export default function HomeUser({ navigation }) {
   const [selectedData, setSelectedData] = useState();
 
   return (
@@ -24,6 +24,7 @@ export default function HomeUser() {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
+        onPress={() => navigation.navigate('Map')}
       >
         <Text style={styles.buttonText}>Route</Text>
       </TouchableOpacity>
