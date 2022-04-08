@@ -1,11 +1,15 @@
 import React from 'react'
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 export default function MapScreen() {
     return (
         <View style={styles.container}>
-            <MapView style={styles.map} />
+            <MapView style={styles.map}>
+                <Marker
+                    coordinate={{ latitude: 40.766666, longitude: 29.916668 }}
+                />
+            </MapView>
         </View>
     )
 }
@@ -18,7 +22,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: "100%",
+        height: "100%",
     },
 })
