@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -11,37 +11,42 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
-    // behavior="padding"
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <View style={styles.containerInput}>
-        <TextInput
-          placeholder='Username'
-          style={styles.input}
-          value={username}
-          onChangeText={text => {
-            setUsername(text)
-          }} />
-        <TextInput
-          placeholder="Password"
-          style={styles.input}
-          value={password}
-          onChangeText={text => {
-            setPassword(text)
-          }}
-          secureTextEntry
+      <View style={styles.container}>
+        <Image
+          style={{ width: 200, height: 200, marginBottom: 40 }}
+          resizeMode="cover"
+          source={require('../assets/route-icon.png')}
         />
+        <View style={styles.containerInput}>
+          <TextInput
+            placeholder='Username'
+            style={styles.input}
+            value={username}
+            onChangeText={text => {
+              setUsername(text)
+            }} />
+          <TextInput
+            placeholder="Password"
+            style={styles.input}
+            value={password}
+            onChangeText={text => {
+              setPassword(text)
+            }}
+            secureTextEntry
+          />
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => loginControl()}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={styles.containerButton}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => loginControl()}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-      </View>
-
     </KeyboardAvoidingView>
   )
 }
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#0782F9',
+    backgroundColor: '#000',
     width: '100%',
     padding: 10,
     borderRadius: 10,
