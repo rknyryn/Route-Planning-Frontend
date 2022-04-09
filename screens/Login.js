@@ -16,7 +16,7 @@ export default function LoginScreen({ navigation }) {
     >
       <View style={styles.container}>
         <Image
-          style={{ width: 200, height: 200, marginBottom: 40 }}
+          style={styles.image}
           resizeMode="cover"
           source={require('../assets/route-icon.png')}
         />
@@ -85,4 +85,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 40,
+    borderRadius: 20
+  }
 })
