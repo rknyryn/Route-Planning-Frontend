@@ -65,15 +65,21 @@ export default function HomeUser({ route, navigation }) {
       redirect: 'follow'
     };
 
-    fetch("http://route-planning-backend.azurewebsites.net/algorithm/limited-car/route", requestOptions)
+    await fetch("http://route-planning-backend.azurewebsites.net/algorithm/limited-car/route", requestOptions)
       .then(response => response.json())
-      .then(result => console.log(result))
+      .then(result => {
+        if(result.status_code == 403){
+          Alert.alert('Route Plannig', result.msg)
+        }else{
+          navigation.navigate('Map', { data: result })
+        }
+      })
       .catch(error => console.log('error', error));
   }
 
   useEffect(() => {
     var today = new Date();
-    setDate(today.getDate() + 1 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    setDate(today.getDate() + 6 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
     getAllStation();
   }, []);
 

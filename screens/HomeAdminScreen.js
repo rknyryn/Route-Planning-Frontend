@@ -9,152 +9,34 @@ import {
   Modal,
   KeyboardAvoidingView, Alert
 } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home!</Text>
+    </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
 
 export default function HomeAdminScreen() {
-  const [stationName, setStationName] = useState('');
-  const [stationLat, setStationLat] = useState('');
-  const [stationLon, setStationLon] = useState('');
-  const [stations, setStations] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  async function getAllStation() {
-    var myHeaders = new Headers();
-    myHeaders.append("Cookie", "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58");
-
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-
-    await fetch("http://route-planning-backend.azurewebsites.net/station/list", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        setStations(result.station_list);
-      })
-      .catch(error => console.log('error', error));
-  }
-
-  async function createStation() {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Cookie", "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58");
-
-    var raw = JSON.stringify({
-      "station_name": stationName,
-      "station_lat": stationLat,
-      "station_lon": stationLon
-    });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    await fetch("http://route-planning-backend.azurewebsites.net/station/add", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        modalToggle();
-        Alert.alert("Route Planing", result.msg);
-        getAllStation()
-      })
-      .catch(error => console.log('error', error));
-  }
-
-  const modalToggle = () => {
-    setStationName('');
-    setStationLat('');
-    setStationLon('');
-    setModalVisible(!modalVisible);
-  }
-
-  useEffect(() => {
-    getAllStation();
-  }, []);
-
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <View style={styles.containerList}>
-        {stations &&
-          <FlatList
-            style={{ flex: 1 }}
-            data={stations}
-            renderItem={(item) => {
-              return (
-                <TouchableOpacity
-                  style={styles.item}
-                  onPress={() =>
-                    Alert.alert(item.item.name,
-                      "Latitude: " + item.item.lat + "\nLongitude: " + item.item.lon)}
-                >
-                  <Text style={{ fontSize: 16, }}>{item.item.name}</Text>
-                </TouchableOpacity>
-              )
-            }}
-            keyExtractor={item => item.id}
-          />}
-        <TouchableOpacity
-          style={styles.floatingButton}
-          onPress={modalToggle}
-        >
-          <Text style={styles.floatingButtonText}>+</Text>
-        </TouchableOpacity>
-
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={modalToggle}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TextInput
-                placeholder='Station Name'
-                style={styles.modalInput}
-                value={stationName}
-                onChangeText={text => {
-                  setStationName(text)
-                }}
-              />
-              <TextInput
-                placeholder='Station Latitude'
-                style={styles.modalInput}
-                value={stationLat}
-                onChangeText={text => {
-                  setStationLat(text)
-                }}
-              />
-              <TextInput
-                placeholder='Station Longitude'
-                style={styles.modalInput}
-                value={stationLon}
-                onChangeText={text => {
-                  setStationLon(text)
-                }}
-              />
-              <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
-                <TouchableOpacity
-                  style={[styles.modalButton, { backgroundColor: "#C70D3A" }]}
-                  onPress={modalToggle}
-                >
-                  <Text style={styles.modalButtonText}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.modalButton, { backgroundColor: "#019267" }]}
-                  onPress={createStation}
-                >
-                  <Text style={styles.modalButtonText}>Save</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-    </KeyboardAvoidingView>
-  )
+    <Tab.Navigator initialRouteName="Settings">
+      <Tab.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+      <Tab.Screen options={{ headerShown: false }} name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
 }
 
 const styles = StyleSheet.create({
