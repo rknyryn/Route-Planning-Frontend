@@ -48,12 +48,12 @@ export default function HomeUser({ navigation }) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => console.log(selectedData)}
       >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
+        onPress={() => navigation.navigate("Map")}
       >
         <Text style={styles.buttonText}>Route</Text>
       </TouchableOpacity>
@@ -79,14 +79,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
   },
 })

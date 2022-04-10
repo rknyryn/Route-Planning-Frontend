@@ -11,8 +11,8 @@ export default function LoginScreen({ navigation }) {
     myHeaders.append("Cookie", "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58");
 
     var raw = JSON.stringify({
-      "username": "admin",
-      "password": "admin"
+      "username": username,
+      "password": password
     });
 
     var requestOptions = {
@@ -31,8 +31,15 @@ export default function LoginScreen({ navigation }) {
   async function loginControl (){
     await loginRequest()
     .then(response => {
-      console.log(response)
-      navigation.navigate('HomeUser');
+      if(response.status_code == 200){
+        if(response.user_type == 0){
+          navigation.navigate('HomeUser');
+        }else{
+          navigation.navigate('HomeAdmin');
+        }
+      }else{
+        alert(response.msg);
+      }
     });
   }
 
