@@ -33,9 +33,9 @@ export default function LoginScreen({ navigation }) {
       .then(response => {
         if (response.status_code == 200) {
           if (response.user_type == 0) {
-            navigation.navigate('HomeUser');
+            navigation.navigate('HomeUser', { user: response});
           } else {
-            navigation.navigate('HomeAdmin');
+            navigation.navigate('HomeAdmin', {user: response});
           }
         } else {
           alert(response.msg);
@@ -74,7 +74,7 @@ export default function LoginScreen({ navigation }) {
       <View style={styles.containerButton}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => loginControl()}
+          onPress={loginControl}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>

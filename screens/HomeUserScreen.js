@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Alert } from 'react-native'
 import { Picker } from '@react-native-picker/picker';
 
-export default function HomeUser({ navigation }) {
+export default function HomeUser({ route, navigation }) {
+  const { user } = route.params;
   const [selectedData, setSelectedData] = useState();
   const [stations, setStations] = useState([]);
+  const [date, setDate] = useState('');
 
   async function getAllStation() {
     var myHeaders = new Headers();
@@ -24,7 +26,54 @@ export default function HomeUser({ navigation }) {
       .catch(error => console.log('error', error));
   }
 
+  async function chooseStation() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "user_id": user.user_id,
+      "user_station_id": selectedData.id,
+      "route_date": date
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://route-planning-backend.azurewebsites.net/route/chose-station/", requestOptions)
+      .then(response => response.json())
+      .then(result => Alert.alert("Route Planning", result.msg))
+      .catch(error => console.log('error', error));
+  }
+
+  async function getServiceRoute() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "user_id": user.user_id,
+      "route_date": date
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://route-planning-backend.azurewebsites.net/algorithm/limited-car/route", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
+
   useEffect(() => {
+    var today = new Date();
+    setDate(today.getDate() + 1 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
     getAllStation();
   }, []);
 
@@ -36,6 +85,7 @@ export default function HomeUser({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Text style={{ fontSize: 16, margin: 10 }}>The date on which the service will be requested: {date}</Text>
       <View style={styles.picker}>
         <Picker
           selectedValue={selectedData}
@@ -48,12 +98,13 @@ export default function HomeUser({ navigation }) {
       </View>
       <TouchableOpacity
         style={styles.button}
+        onPress={chooseStation}
       >
         <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("Map")}
+        onPress={getServiceRoute}
       >
         <Text style={styles.buttonText}>Route</Text>
       </TouchableOpacity>
