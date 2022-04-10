@@ -36,7 +36,7 @@ export default function HomeUser({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{ margin: 5, width: "80%", backgroundColor: "white", borderRadius: 10 }}>
+      <View style={styles.picker}>
         <Picker
           selectedValue={selectedData}
           onValueChange={(itemValue, itemIndex) => {
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#FFF"
   },
   button: {
     margin: 5,
@@ -80,4 +81,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
+  picker: {
+    margin: 5,
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 0.5,
+  }
 })
