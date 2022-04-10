@@ -5,8 +5,35 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const loginControl = () => {
-    navigation.navigate('HomeUser');
+  async function loginRequest(){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Cookie", "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58");
+
+    var raw = JSON.stringify({
+      "username": "admin",
+      "password": "admin"
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    return await fetch("http://route-planning-backend.azurewebsites.net/account/auth", requestOptions)
+      .then(response => response.json())
+      .then(result => {return result})
+      .catch(error => console.log('error', error));
+  }
+
+  async function loginControl (){
+    await loginRequest()
+    .then(response => {
+      console.log(response)
+      navigation.navigate('HomeUser');
+    });
   }
 
   return (
