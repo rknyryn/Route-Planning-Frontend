@@ -79,7 +79,7 @@ export default function HomeUser({ route, navigation }) {
 
   useEffect(() => {
     var today = new Date();
-    setDate(today.getDate() + 6 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    setDate(today.getDate() + 1 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
     getAllStation();
   }, []);
 

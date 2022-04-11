@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 export default function MapScreen({ route }) {
     const { data } = route.params
-    const [serviceRoute, setServiceRoute] = useState([]);
-    const [coordinates, setCoordinates] = useState([]);
-
-    useEffect(() => {
-        setServiceRoute(data.service_route);
-        data.service_route.map(m => setCoordinates(prevState => [...prevState, {latitude: m.lat, longitude: m.lon}]));
-    }, []);
+    const [serviceRoute, setServiceRoute] = useState(data.service_route);
+    const [coordinates, setCoordinates] = useState(data.service_route.map(m => ({ latitude: m.lat, longitude: m.lon })));
 
     return (
         <View style={styles.container}>
-            <MapView style={styles.map}>
+            <MapView
+                style={styles.map}>
                 {
                     serviceRoute &&
-                    serviceRoute.map(m => {
+                    serviceRoute.map((m, index) => {
                         return (
                             <Marker
+                                key={index}
                                 coordinate={{ latitude: m.lat, longitude: m.lon }}
                                 title={m.name}
                                 description={"Station Order: " + m.station_order}
