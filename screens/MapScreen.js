@@ -5,7 +5,6 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 export default function MapScreen({ route }) {
     const { data } = route.params
     const [serviceRoute, setServiceRoute] = useState(data.service_route);
-    const [coordinates, setCoordinates] = useState(data.service_route.map(m => ({ latitude: m.lat, longitude: m.lon })));
 
     return (
         <View style={styles.container}>
@@ -24,19 +23,11 @@ export default function MapScreen({ route }) {
                         )
                     })
                 }
-                {coordinates && <Polyline
-                    coordinates={coordinates}
+                <Polyline
+                    coordinates={data.service_route.map(m => ({ latitude: m.lat, longitude: m.lon }))}
                     strokeColor="#FF0000"
-                    strokeColors={[
-                        '#7F0000',
-                        '#00000000',
-                        '#B24112',
-                        '#E5845C',
-                        '#238C23',
-                        '#7F0000'
-                    ]}
                     strokeWidth={2}
-                />}
+                />
             </MapView>
         </View>
     )

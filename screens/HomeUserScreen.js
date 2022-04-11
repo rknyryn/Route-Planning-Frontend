@@ -4,9 +4,10 @@ import { Picker } from '@react-native-picker/picker';
 
 export default function HomeUser({ route, navigation }) {
   const { user } = route.params;
+  var today = new Date();
   const [selectedData, setSelectedData] = useState();
   const [stations, setStations] = useState([]);
-  const [date, setDate] = useState('');
+  const date = today.getDate() + 1 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
 
   async function getAllStation() {
     var myHeaders = new Headers();
@@ -68,9 +69,9 @@ export default function HomeUser({ route, navigation }) {
     await fetch("http://route-planning-backend.azurewebsites.net/algorithm/limited-car/route", requestOptions)
       .then(response => response.json())
       .then(result => {
-        if(result.status_code == 403){
+        if (result.status_code == 403) {
           Alert.alert('Route Plannig', result.msg)
-        }else{
+        } else {
           navigation.navigate('Map', { data: result })
         }
       })
@@ -78,8 +79,6 @@ export default function HomeUser({ route, navigation }) {
   }
 
   useEffect(() => {
-    var today = new Date();
-    setDate(today.getDate() + 1 + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
     getAllStation();
   }, []);
 

@@ -7,6 +7,7 @@ import RegisterScreen from './screens/Register';
 import HomeUserScreen from './screens/HomeUserScreen';
 import HomeAdminScreen from './screens/HomeAdminScreen';
 import MapScreen from './screens/MapScreen';
+import MapAdminScreen from './screens/MapAdminScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
         <Stack.Screen name="HomeUser" options={{ title: "Home" }} component={HomeUserScreen} />
         <Stack.Screen name="HomeAdmin" options={{ title: "Home" }} component={HomeAdminScreen} />
         <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="MapAdmin" options={{ title: "Map Admin" }} component={MapAdminScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
