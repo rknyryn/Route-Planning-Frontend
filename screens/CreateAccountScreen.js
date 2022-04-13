@@ -8,10 +8,12 @@ import {
   View,
   Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
-export default function RegisterScreen({ navigation }) {
+export default function CreateAccountScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedData, setSelectedData] = useState();
 
   async function createAccount() {
     var myHeaders = new Headers();
@@ -20,7 +22,7 @@ export default function RegisterScreen({ navigation }) {
     var raw = JSON.stringify({
       username: username,
       password: password,
-      user_type: 0,
+      user_type: selectedData,
     });
 
     var requestOptions = {
@@ -37,7 +39,6 @@ export default function RegisterScreen({ navigation }) {
       .then((response) => response.json())
       .then((result) => {
         Alert.alert("Route Planning", result.msg);
-        navigation.goBack();
       })
       .catch((error) => console.log("error", error));
   }
@@ -65,11 +66,22 @@ export default function RegisterScreen({ navigation }) {
           }}
           secureTextEntry
         />
+        <View style={styles.picker}>
+          <Picker
+            selectedValue={selectedData}
+            onValueChange={(itemValue, itemIndex) => {
+              setSelectedData(itemValue);
+            }}
+          >
+            <Picker.Item label={"Admin"} value={1} key={1} />
+            <Picker.Item label={"User"} value={0} key={0} />
+          </Picker>
+        </View>
       </View>
 
       <View style={styles.containerButton}>
         <TouchableOpacity style={styles.button} onPress={createAccount}>
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -112,4 +124,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 16,
   },
+  picker: {
+    marginTop: 5,
+    borderRadius: 10,
+    backgroundColor: "#DFDFDF"
+  }
 });

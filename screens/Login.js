@@ -78,12 +78,6 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={styles.buttonLoginText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonRegister}
-          onPress={() => navigation.navigate('Signup')}
-        >
-          <Text style={styles.buttonRegisterText}>Signup</Text>
-        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   )
