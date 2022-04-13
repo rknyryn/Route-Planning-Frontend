@@ -73,10 +73,16 @@ export default function LoginScreen({ navigation }) {
       </View>
       <View style={styles.containerButton}>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.buttonLogin}
           onPress={loginControl}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonLoginText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonRegister}
+          onPress={() => navigation.navigate('Signup')}
+        >
+          <Text style={styles.buttonRegisterText}>Signup</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -106,15 +112,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
   },
-  button: {
+  buttonLogin: {
     backgroundColor: '#000',
     width: '100%',
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
+    marginTop: 5
   },
-  buttonText: {
+  buttonLoginText: {
     color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  buttonRegister: {
+    backgroundColor: '#FFF',
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 5,
+    borderWidth: 1,
+    borderColor: "#000"
+  },
+  buttonRegisterText: {
+    color: '#000',
     fontWeight: '700',
     fontSize: 16,
   },
