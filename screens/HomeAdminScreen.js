@@ -14,7 +14,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import StationsScreen from "./StationsScreen";
 import DailyVoteScreen from "./DailyVoteScreen";
-import CreateAccountScreen from "./CreateAccountScreen";
+import AccountScreen from "./AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,6 @@ export default function HomeAdminScreen() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false,
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
@@ -30,7 +29,7 @@ export default function HomeAdminScreen() {
             iconName = "vote";
           } else if (route.name === "Stations") {
             iconName = "bus-marker";
-          } else if(route.name === "CreateAccount"){
+          } else if(route.name === "Account"){
             iconName = "account";
           }
 
@@ -43,7 +42,7 @@ export default function HomeAdminScreen() {
     >
       <Tab.Screen name="DailyVote" component={DailyVoteScreen} />
       <Tab.Screen name="Stations" component={StationsScreen} />
-      <Tab.Screen name="CreateAccount" options={{title: "Create Account"}} component={CreateAccountScreen} />
+      <Tab.Screen name="Account" options={{title: "Account"}} component={AccountScreen} />
     </Tab.Navigator>
   );
 }

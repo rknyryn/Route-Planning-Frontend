@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  FlatList,
+  Modal,
   Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
@@ -16,6 +16,7 @@ export default function HomeUser({ route, navigation }) {
   var today = new Date();
   const [selectedData, setSelectedData] = useState();
   const [stations, setStations] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const date =
     today.getDate() +
     1 +
@@ -112,9 +113,14 @@ export default function HomeUser({ route, navigation }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={getAllStation}>
-          <Icon name="reload" size={26} color={"#000"} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={{ marginRight: 10 }} onPress={getAllStation}>
+            <Icon name="reload" size={26} color={"#000"} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowModal(true)}>
+            <Icon name="account" size={26} color={"#000"} />
+          </TouchableOpacity>
+        </View>
       ),
     });
   }, [navigation]);
@@ -133,7 +139,14 @@ export default function HomeUser({ route, navigation }) {
         <Map stations={stations} />
       </View>
       <View style={styles.containerBody}>
-        <Text style={{ fontSize: 16, marginLeft: 10, marginRight: 10, marginBottom: 5 }}>
+        <Text
+          style={{
+            fontSize: 16,
+            marginLeft: 10,
+            marginRight: 10,
+            marginBottom: 5,
+          }}
+        >
           The date on which the service will be requested: {date}
         </Text>
         <View style={styles.picker}>
@@ -153,6 +166,34 @@ export default function HomeUser({ route, navigation }) {
           <Text style={styles.buttonText}>Route</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showModal}
+        onRequestClose={() => setShowModal(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={{ fontWeight: "700", fontSize: 16 }}>
+              Are you sure you want to sign out?
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => setShowModal(false)}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
+                style={[styles.modalButton, { backgroundColor: "#C70D3A" }]}
+              >
+                <Text style={styles.modalButtonText}>Sign Out</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -160,14 +201,14 @@ export default function HomeUser({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFF"
   },
   containerMap: {
     backgroundColor: "green",
-    flex: 6,
+    flex: 1,
   },
   containerBody: {
-    flex: 4,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -187,9 +228,46 @@ const styles = StyleSheet.create({
   picker: {
     margin: 5,
     width: "80%",
-    height: 50,
     backgroundColor: "white",
     borderRadius: 10,
     borderWidth: 0.5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "#202020" + "AA",
+  },
+  modalView: {
+    width: "90%",
+    height: 150,
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalButton: {
+    height: 50,
+    width: 100,
+    margin: 10,
+    borderRadius: 10,
+    backgroundColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });

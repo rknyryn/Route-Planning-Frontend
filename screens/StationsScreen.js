@@ -165,21 +165,6 @@ const styles = StyleSheet.create({
   containerMap: {
     flex: 1,
   },
-  item: {
-    backgroundColor: "#FFF",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   floatingButton: {
     position: "absolute",
     width: 65,
@@ -187,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     alignItems: "center",
     justifyContent: "center",
-    left: 10,
+    right: 10,
     bottom: 10,
     backgroundColor: "#000",
     shadowColor: "#000",

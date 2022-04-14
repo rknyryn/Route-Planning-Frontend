@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-export default function CreateAccountScreen({ navigation }) {
+export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedData, setSelectedData] = useState();
+  const [selectedData, setSelectedData] = useState(1);
 
   async function createAccount() {
     var myHeaders = new Headers();
@@ -83,6 +83,12 @@ export default function CreateAccountScreen({ navigation }) {
         <TouchableOpacity style={styles.button} onPress={createAccount}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#C70D3A" }]}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFF"
   },
   containerInput: {
     width: "80%",
@@ -127,6 +133,7 @@ const styles = StyleSheet.create({
   picker: {
     marginTop: 5,
     borderRadius: 10,
-    backgroundColor: "#DFDFDF"
-  }
+    width: "100%",
+    backgroundColor: "#DFDFDF",
+  },
 });

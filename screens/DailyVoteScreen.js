@@ -6,7 +6,7 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useState, useEffect } from "react";
 
 export default function DailyVoteScreen({ navigation }) {
@@ -71,9 +71,7 @@ export default function DailyVoteScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.status_code === 400) {
-          Alert.alert("Route Planning", result.msg);
-        }
+        Alert.alert("Route Planning", result.msg);
       })
       .catch((error) => console.log("error", error));
   }
@@ -110,28 +108,34 @@ export default function DailyVoteScreen({ navigation }) {
 
   async function routeClear() {
     var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      route_date: date,
+    });
 
     var requestOptions = {
       method: "DELETE",
       headers: myHeaders,
+      body: raw,
       redirect: "follow",
     };
 
     await fetch(
-      "http://route-planning-backend.azurewebsites.net/route/clear",
+      "http://route-planning-backend.azurewebsites.net/route/clear-route",
       requestOptions
     )
       .then((response) => response.json())
       .catch((error) => console.log("error", error));
 
-
     await fetch(
-      "http://route-planning-backend.azurewebsites.net/algorithm/clear",
+      "http://route-planning-backend.azurewebsites.net/route/clear-daily-vote",
       requestOptions
     )
       .then((response) => response.json())
       .then((result) => {
         Alert.alert("Route Planning", result.msg);
+        setDailyList([]);
       })
       .catch((error) => console.log("error", error));
   }
@@ -139,6 +143,18 @@ export default function DailyVoteScreen({ navigation }) {
   useEffect(() => {
     getDailyList();
   }, []);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={{ marginRight: 10 }} onPress={getDailyList}>
+            <Icon name="reload" size={26} color={"#000"} />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -153,7 +169,7 @@ export default function DailyVoteScreen({ navigation }) {
                   <Text>{item.item.name}</Text>
                   <Text>
                     {item.item.passenger_count}{" "}
-                    <Ionicons name="person" size={12} color={"#000"} />
+                    <Icon name="account" size={12} color={"#000"} />
                   </Text>
                 </View>
               );
@@ -167,7 +183,10 @@ export default function DailyVoteScreen({ navigation }) {
           <TouchableOpacity style={styles.button} onPress={saveRoute}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MultipleSelect")}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>Multiple Select</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={getRouteList}>
