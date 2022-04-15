@@ -129,6 +129,13 @@ export default function DailyVoteScreen({ navigation }) {
       .catch((error) => console.log("error", error));
 
     await fetch(
+      "http://route-planning-backend.azurewebsites.net/algorithm/clear-car-stats",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .catch((error) => console.log("error", error));
+
+    await fetch(
       "http://route-planning-backend.azurewebsites.net/route/clear-daily-vote",
       requestOptions
     )
