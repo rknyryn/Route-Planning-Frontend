@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Picker } from "@react-native-picker/picker";
-
+  const {apiBaseUrl} = require("../config.json")
+  
 export default function MultipleSelectScreen({ navigation }) {
+
   var today = new Date();
   const date =
     today.getDate() +
@@ -36,7 +38,7 @@ export default function MultipleSelectScreen({ navigation }) {
     };
 
     await fetch(
-      "http://route-planning-backend.azurewebsites.net/station/list",
+      apiBaseUrl + "/station/list",
       requestOptions
     )
       .then((response) => response.json())
@@ -64,7 +66,7 @@ export default function MultipleSelectScreen({ navigation }) {
     };
 
     fetch(
-      "http://route-planning-backend.azurewebsites.net/route/multiple-station-chose",
+      apiBaseUrl + "/route/multiple-station-chose",
       requestOptions
     )
       .then((response) => response.json())

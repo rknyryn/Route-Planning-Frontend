@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Map from "../components/Map";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+const {apiBaseUrl} = require("../config.json")
 
-export default function StationsScreen() {
+export default function StationsScreen({ navigation }) {
   const [station, setStation] = useState({
     stationName: "",
     stationLat: "",
@@ -31,7 +33,7 @@ export default function StationsScreen() {
     };
 
     await fetch(
-      "http://route-planning-backend.azurewebsites.net/station/list",
+      apiBaseUrl + "/station/list",
       requestOptions
     )
       .then((response) => response.json())
@@ -44,10 +46,6 @@ export default function StationsScreen() {
   async function createStation() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Cookie",
-      "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58"
-    );
 
     var raw = JSON.stringify({
       station_name: station.stationName,
@@ -63,7 +61,7 @@ export default function StationsScreen() {
     };
 
     await fetch(
-      "http://route-planning-backend.azurewebsites.net/station/add",
+      apiBaseUrl + "/station/add",
       requestOptions
     )
       .then((response) => response.json())
@@ -82,6 +80,18 @@ export default function StationsScreen() {
   useEffect(() => {
     getAllStation();
   }, []);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={{ marginRight: 10 }} onPress={getAllStation}>
+            <Icon name="reload" size={26} color={"#000"} />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <KeyboardAvoidingView

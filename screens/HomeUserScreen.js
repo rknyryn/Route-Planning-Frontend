@@ -10,6 +10,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Map from "../components/Map";
+const { apiBaseUrl } = require("../config.json");
 
 export default function HomeUser({ route, navigation }) {
   const { user } = route.params;
@@ -27,10 +28,6 @@ export default function HomeUser({ route, navigation }) {
 
   async function getAllStation() {
     var myHeaders = new Headers();
-    myHeaders.append(
-      "Cookie",
-      "ARRAffinity=6507bdc255f23a4f1ad4b5182514791bd1126448d921d867fd42e77489564d58"
-    );
 
     var requestOptions = {
       method: "GET",
@@ -38,10 +35,7 @@ export default function HomeUser({ route, navigation }) {
       redirect: "follow",
     };
 
-    await fetch(
-      "http://route-planning-backend.azurewebsites.net/station/list",
-      requestOptions
-    )
+    await fetch(apiBaseUrl + "/station/list", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setStations(result.station_list);
@@ -66,10 +60,7 @@ export default function HomeUser({ route, navigation }) {
       redirect: "follow",
     };
 
-    fetch(
-      "http://route-planning-backend.azurewebsites.net/route/chose-station/",
-      requestOptions
-    )
+    fetch(apiBaseUrl + "/route/chose-station/", requestOptions)
       .then((response) => response.json())
       .then((result) => Alert.alert("Route Planning", result.msg))
       .catch((error) => console.log("error", error));
@@ -91,10 +82,7 @@ export default function HomeUser({ route, navigation }) {
       redirect: "follow",
     };
 
-    await fetch(
-      "http://route-planning-backend.azurewebsites.net/algorithm/limited-car/route",
-      requestOptions
-    )
+    await fetch(apiBaseUrl + "/algorithm/limited-car/route", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.status_code == 403) {
@@ -118,7 +106,7 @@ export default function HomeUser({ route, navigation }) {
             <Icon name="reload" size={26} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowModal(true)}>
-            <Icon name="account" size={26} color={"#000"} />
+            <Icon name="logout" size={26} color={"#000"} />
           </TouchableOpacity>
         </View>
       ),
@@ -162,7 +150,10 @@ export default function HomeUser({ route, navigation }) {
         <TouchableOpacity style={styles.button} onPress={chooseStation}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={getServiceRoute}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#2E86C1" }]}
+          onPress={getServiceRoute}
+        >
           <Text style={styles.buttonText}>Route</Text>
         </TouchableOpacity>
       </View>
@@ -201,7 +192,7 @@ export default function HomeUser({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
   },
   containerMap: {
     backgroundColor: "green",
@@ -219,6 +210,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     alignItems: "center",
+    backgroundColor: "#019267",
   },
   buttonText: {
     color: "white",

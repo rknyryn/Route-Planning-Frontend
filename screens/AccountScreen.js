@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+const { apiBaseUrl } = require("../config.json");
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -32,10 +33,7 @@ export default function AccountScreen({ navigation }) {
       redirect: "follow",
     };
 
-    await fetch(
-      "http://route-planning-backend.azurewebsites.net/account/register",
-      requestOptions
-    )
+    await fetch(apiBaseUrl + "/account/register", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         Alert.alert("Route Planning", result.msg);
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
   },
   containerInput: {
     width: "80%",
