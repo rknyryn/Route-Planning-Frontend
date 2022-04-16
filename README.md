@@ -8,11 +8,11 @@ The things you will need in order to use the app and how to install them.
 ### How to use
 First you need to download project.
 ```
-git clone https://github.com/rknyryn/Minimalist-Weather-App.git
+git clone https://github.com/rknyryn/Route-Planning-Frontend.git
 ```
 After you build you can install dependencies.
 ```
-cd Minimalist-Weather-App
+cd Route-Planning-Frontend
 npm install
 ```
 Now you can start app
